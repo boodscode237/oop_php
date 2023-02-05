@@ -1,7 +1,7 @@
 <?php
  class User {
     public string $username;
-    private string $email;
+    protected string $email;
     public string $role = 'member';
     public function addFriend() : string {
         return "$this->username added a new friend";
@@ -16,7 +16,18 @@
         $this->email = $email;
     }
 
-    // getters
+    public function __destruct()
+    {
+        echo "the user $this->username was removed <br>";
+    }
+
+    public function __clone() : void {
+        $this->username = $this->username . '(cloned)<br>';
+    }
+
+
+
+     // getters
      public function getEmail(): string
      {
         return $this->email;
@@ -45,22 +56,32 @@
         $this->level = $level;
         parent::__construct($username, $email);
     }
+
+     public function message() : string {
+         return "$this->email, an admin, added a new friend";
+     }
  }
 
  $userOne = new User('joe', 'joe@yandex.ru');
  $userTwo = new User('viva', 'viva@june.ru');
  $userThree = new AdminUser('admin1', 'admin1@text.ru', 5);
 
+
  echo $userThree->username . '<br>';
  echo $userThree->getEmail() . '<br>';
  echo $userThree->level . '<br>';
+ echo $userThree->message() . '<br>';
  echo $userOne->role . '<br>';
  echo $userOne->message() . '<br>';
-
+// unset($userOne);
+// clone
+$userFour = clone $userOne;
+echo $userFour->username;
 // print_r(get_class_vars('User'));
 // print_r(get_class_methods('User'))
 
 ?>
+
 
 <!doctype html>
 <html lang="en">
